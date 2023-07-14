@@ -1,28 +1,33 @@
 package api
 
-import "net"
+import (
+	"net"
 
-func StartServer() error {
-	var TCPServer, TCPErr = net.Listen("tcp", ":49069")
+	"github.com/praveenmahasena647/bg-server/internal/helpers"
+)
+
+func RunServer() error {
+	var TCPServer, TCPErr = net.Listen("tcp", ":42069")
 
 	if TCPErr != nil {
 		return TCPErr
 	}
-
 	defer TCPServer.Close()
 
 	for {
 		var con, conErr = TCPServer.Accept()
+
 		if conErr != nil {
 			continue
 		}
-		var data, dataErr = getImages()
-		if dataErr != nil {
-			con.Write([]byte("server Error"))
+
+		var byteBuffer, err = helpers.GetImages()
+
+		if err != nil {
+			return err
 		}
-		con.Write(data)
+		con.Write(byteBuffer)
 		con.Close()
 	}
-
 	return nil
 }

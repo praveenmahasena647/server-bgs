@@ -8,7 +8,8 @@ import (
 )
 
 func main() {
-	var err error = api.StartServer()
+	var err error = api.RunServer()
+
 	if err != nil {
 		fmt.Printf("%v", err)
 		os.Exit(-1)
